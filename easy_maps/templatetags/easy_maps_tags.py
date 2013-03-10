@@ -53,7 +53,7 @@ class EasyMapNode(template.Node):
         if isinstance(address, Address):
             return address
 
-        if address == '':
+        if not address or address == '':
             map_ = Address(latitude=settings.EASY_MAPS_CENTER[0],
                            longitude=settings.EASY_MAPS_CENTER[1])
         else:
