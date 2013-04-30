@@ -9,6 +9,12 @@ class AddressForm(forms.ModelForm):
             'address': AddressWithMapWidget({'class': 'vTextField'})
         }
 
+    class Media:
+        js = (
+            'https://maps.google.com/maps/api/js?sensor=false',
+            'js/easy_maps.js',
+        )
+
 class AddressAdmin(admin.ModelAdmin):
     list_display = ['address', 'computed_address', 'latitude', 'longitude', 'geocode_error']
     list_filter = ['geocode_error']
