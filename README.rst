@@ -45,6 +45,9 @@ Examples::
     <!-- Variable address, custom detail level and custom template -->
     {% easy_map address 200 200 5 using 'map.html' %}
 
+The ``address`` variable can be an Address instance, a string or an
+iterable containing them.
+
 The coordinates for map will be obtained using google geocoder on first
 access. Then they'll be cached in DB. Django's template caching can be used
 later in order to prevent DB access on each map render::

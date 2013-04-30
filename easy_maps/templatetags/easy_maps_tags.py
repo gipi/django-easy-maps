@@ -12,8 +12,11 @@ def easy_map(parser, token):
     The syntax:
         {% easy_map <address> [<width> <height>] [<zoom>] [using <template_name>] %}
 
-    The "address" parameter can be an Address instance or a string describing it.
-    If an address is not found a new entry is created in the database.
+    The "address" parameter can be an Address instance or a string describing it, or an
+    iterable of them.
+
+    If an address is not found a new entry is created in the database, instead if an empty
+    string is passed, the database is not hit.
     """
     width, height, zoom, template_name = None, None, None, None
     params = token.split_contents()
@@ -58,15 +61,35 @@ class EasyMapNode(template.Node):
 
         return map_
 
+    def get_addresses(self, address):
+        """Return a list containing the Address instances corresponding
+        to the addresses passed to this function.
+        """
+        # if not a string but it's an iterable
+        if not isinstance(address, basestring):
+            try:
+                iter(address)
+            except TypeError:
+                address = [address,]
+        else:
+            address = [address,]
+
+        map = []
+        for a in address:
+            map.append(self.get_map(a))
+
+        return map
 
     def render(self, context):
         try:
             address = self.address.resolve(context)
             template_name = self.template_name.resolve(context)
-            map_ = self.get_map(address)
+
+            map = self.get_addresses(address)
 
             context.update({
-                'map': map_,
+                'id': id(self),
+                'map': map,
                 'width': self.width,
                 'height': self.height,
                 'zoom': self.zoom,

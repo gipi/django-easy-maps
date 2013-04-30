@@ -10,6 +10,11 @@ def index(request):
 
 
 urlpatterns = patterns('',
-    url(r'^$', index, name='index'),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', direct_to_template, {
+        'template': 'index.html',
+        'extra_context': {
+            'address': ["Ekaterinburg, Mira 33", "Ekaterinburg, Malysheva 45",],
+        },
+    }, 'index'),
+    (r'^admin/', include(admin.site.urls)),
 )

@@ -42,7 +42,7 @@ class AddressTests(TestCase):
         # below we patch the render_to_string in order to retrieve the map
         # context variable and check its coordinate
         def get_map_context_instance(*args, **kwargs):
-            address[0] = kwargs['context_instance']['map']
+            self.address = (kwargs['context_instance'].dicts[1])['map'][0]
             return ''
 
         t = template.Template(simple_template_string)
@@ -95,3 +95,23 @@ class AddressTests(TestCase):
 
         # no Address is created in the process
         self.assertEqual(n_addresses_after, n_addresses_before)
+
+    @override_settings(EASY_MAPS_CENTER=fake_default_center)
+    def test_use_more_than_one_address(self):
+        """
+        """
+        n_addresses_before = len(Address.objects.all())
+
+        addresses = ["Mountain View, California, Stati Uniti","Berkeley, California, Stati Uniti"]
+        simple_template_string = """{% load easy_maps_tags %}
+        {% easy_map addresses 500 500 10 %}
+        """
+        t = Template(simple_template_string)
+        t.render(Context({
+            'addresses': addresses,
+        }))
+
+        n_addresses_after = len(Address.objects.all())
+
+        # no Address is created in the process
+        self.assertEqual(n_addresses_after, n_addresses_before + 2)
