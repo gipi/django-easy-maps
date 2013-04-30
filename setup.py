@@ -1,6 +1,15 @@
 #!/usr/bin/env python
-from distutils.core import setup
+from setuptools import setup
+import os
+
 version='0.8'
+
+
+def dump_content(filename):
+    "Dumps contents of a file relatively to the root directory"
+    with open(os.path.join(os.path.dirname(__file__), filename)) as f:
+        return f.read()
+
 
 setup(
     name = 'django-easy-maps',
@@ -10,12 +19,23 @@ setup(
     url = 'https://bitbucket.org/kmike/django-easy-maps/',
 
     description = 'This app makes it easy to display a map for a given address.',
-    long_description = open('README.rst').read() + '\n\n' + open('CHANGES.rst').read(),
+    long_description = dump_content('README.rst') + '\n\n' + dump_content('CHANGES.rst'),
     license = 'MIT license',
-    requires = ['django (>=1.3)', 'geopy (>= 0.95)'],
+    install_requires = [
+        'django>=1.3',
+        'geopy>=0.95',
+    ],
 
-    packages=['easy_maps', 'easy_maps.templatetags', 'easy_maps.migrations'],
-    package_data={'easy_maps': ['templates/easy_maps/*']},
+    packages = [
+        'easy_maps',
+        'easy_maps.templatetags',
+        'easy_maps.migrations'
+    ],
+    package_data = {
+        'easy_maps': [
+            'templates/easy_maps/*'
+        ]
+    },
 
     classifiers=[
         'Development Status :: 4 - Beta',
