@@ -32,7 +32,8 @@ setup(
     ],
     package_data = {
         'easy_maps': [
-            'templates/easy_maps/*'
+            'templates/easy_maps/*',
+            'static/*',
         ]
     },
 
