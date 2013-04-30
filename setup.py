@@ -2,8 +2,7 @@
 from setuptools import setup
 import os
 
-version='0.8'
-
+from easy_maps import version
 
 def dump_content(filename):
     "Dumps contents of a file relatively to the root directory"
