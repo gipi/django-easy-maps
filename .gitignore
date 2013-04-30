@@ -1,3 +1,5 @@
 \.tox
 *\.pyc
 MANIFEST
+/build
+/django_easy_maps.egg-info
